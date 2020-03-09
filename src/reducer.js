@@ -1,4 +1,4 @@
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 
 export default function reducer(state, action) {
   switch (action.type) {
@@ -9,21 +9,16 @@ export default function reducer(state, action) {
       };
     case "ADD_TODO":
       // if empty input field added
-      if (!action.payload) {
-        return state;
-      }
+      // if (!action.payload) {
+      //   return state;
+      // }
 
-      // find boolean with comparison
-      if (state.todos.findIndex(t => t.text === action.payload) > -1) {
-        return state;
-      }
-      const newTodo = {
-        id: uuidv4(),
-        text: action.payload,
-        complete: false
-      };
+      // // find boolean with comparison
+      // if (state.todos.findIndex(t => t.text === action.payload) > -1) {
+      //   return state;
+      // }
       // add new todo to Todos list
-      const addedTodos = [...state.todos, newTodo];
+      const addedTodos = [...state.todos, action.payload];
       return {
         // spread state
         ...state,
@@ -74,8 +69,9 @@ export default function reducer(state, action) {
       };
     case "REMOVE_TODO":
       const filteredTodos = state.todos.filter(t => t.id !== action.payload.id);
+
       const isRemovedToDo =
-        state.currentTodo.id === action.payload.id ? {} : state.currentTodo;
+        state.currentTodo === action.payload ? {} : state.currentTodo;
 
       return {
         ...state,
