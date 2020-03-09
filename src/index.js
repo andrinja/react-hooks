@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useReducer } from "reinspect";
 import ReactDOM from "react-dom";
 import { StateInspector } from "reinspect";
@@ -15,6 +15,26 @@ import todosReducer from "./reducer";
 
 import ToDoList from "./components/TodoList";
 import TodoForm from "./components/ToDoForm";
+import axios from "axios";
+
+// create custom hook
+// custom hook manages it own state
+const useAPI = endpoint => {
+  // in custom hook you can use other API endpoints so keep names in the hook generic
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // make request for todos
+  const getData = async () => {
+    const response = await axios.get(endpoint);
+    setData(response.data);
+  };
+
+  return data;
+};
 
 const App = () => {
   const initialState = useContext(TodosContext);
@@ -24,6 +44,18 @@ const App = () => {
     state => state,
     "help"
   );
+
+  // pass endpoint - get request
+  const savedTodos = useAPI("https://hooks-api-azure.now.sh/todos");
+
+  useEffect(() => {
+    dispatch({
+      type: "GET_TODOS",
+      payload: savedTodos
+    });
+
+    // reload only savedTodos changed
+  }, [savedTodos]);
 
   return (
     <StateInspector name="App">
