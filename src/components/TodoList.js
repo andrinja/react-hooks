@@ -19,9 +19,15 @@ export default function ToDoList() {
             key={todo.id}
           >
             <span
-              onDoubleClick={() =>
-                dispatch({ type: "TOGGLE_TODO", payload: todo })
-              }
+              onDoubleClick={async () => {
+                const response = await axios.patch(
+                  `https://hooks-api-azure.now.sh/todos/${todo.id}`,
+                  {
+                    complete: !todo.complete
+                  }
+                );
+                dispatch({ type: "TOGGLE_TODO", payload: response.data });
+              }}
               className={`flex-1 ml-12 cursor-pointer ${todo.complete &&
                 "line-through text-gray-700"}`}
             >
