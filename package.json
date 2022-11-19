@@ -10,7 +10,7 @@
     "i": "^0.3.6",
     "react": "^0.0.0-8d7535e54",
     "react-dom": "^0.0.0-8d7535e54",
-    "react-scripts": "3.3.1",
+    "react-scripts": "5.0.1",
     "reinspect": "^1.1.0",
     "uuid": "^7.0.2"
   },
